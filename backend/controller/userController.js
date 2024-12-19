@@ -11,6 +11,12 @@ export const registerUser = async (req, res, next) => {
         .json({ success: false, message: "All fields are required" });
     }
 
+    if (userModel.findOne({ email })) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User already exists" });
+    }
+
     const hashPassword = await bcrypt.hash(password, 8);
 
     const user = await userModel.create({
