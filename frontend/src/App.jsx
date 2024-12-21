@@ -13,6 +13,7 @@ import PilotHome from "./pages/PilotHome";
 import PilotProtectWrapper from "./protect/PilotProtectWrapper";
 import PilotLogout from "./pages/PilotLogout";
 import Riding from "./pages/Riding";
+import PilotRiding from "./pages/PilotRiding";
 const App = () => {
   return (
     <div>
@@ -57,6 +58,7 @@ const App = () => {
         />
 
         <Route path="/riding" element={<Riding />} />
+        <Route path="/pilot-riding" element={<PilotRiding />} />
       </Routes>
     </div>
   );

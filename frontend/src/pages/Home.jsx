@@ -2,11 +2,11 @@ import gsap from "gsap";
 import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import "remixicon/fonts/remixicon.css";
-import LocationSearchPanel from "../components/LocationSearchPanel";
-import VehiclePanel from "../components/VehiclePanel";
-import SelectedRide from "../components/SelectedRide";
-import LookingForDriver from "../components/LookingForDriver";
-import WaitingForDriver from "../components/WaitingForDriver";
+import LocationSearchPanel from "../UserComponents/LocationSearchPanel";
+import VehiclePanel from "../UserComponents/VehiclePanel";
+import SelectedRide from "../UserComponents/SelectedRide";
+import LookingForDriver from "../UserComponents/LookingForDriver";
+import WaitingForDriver from "../UserComponents/WaitingForDriver";
 const Home = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -124,7 +124,11 @@ const Home = () => {
         }}
         className="h-screen w-screen"
       >
-        {/* map image api */}
+        <img
+          className="h-full w-full object-cover"
+          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
+          alt=""
+        />
       </div>
       <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
         <div className="h-[30%] p-6 bg-white relative">
