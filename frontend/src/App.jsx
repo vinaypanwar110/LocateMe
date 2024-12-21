@@ -12,6 +12,7 @@ import UserLogout from "./pages/UserLogout";
 import PilotHome from "./pages/PilotHome";
 import PilotProtectWrapper from "./protect/PilotProtectWrapper";
 import PilotLogout from "./pages/PilotLogout";
+import Riding from "./pages/Riding";
 const App = () => {
   return (
     <div>
@@ -54,6 +55,8 @@ const App = () => {
             </PilotProtectWrapper>
           }
         />
+
+        <Route path="/riding" element={<Riding />} />
       </Routes>
     </div>
   );
