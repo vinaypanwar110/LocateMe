@@ -2,17 +2,17 @@ import pilotModel from "../models/pilotModel.js";
 import bcrypt from "bcrypt";
 export const registerPilot = async (req, res, next) => {
   try {
-    const { fullname, email, password, status, vechile, location } = req.body;
+    const { fullname, email, password, status, vehicle, location } = req.body;
 
     if (
       !fullname.firstname ||
       !fullname.lastname ||
       !email ||
       !password ||
-      !vechile.plate ||
-      !vechile.capacity ||
-      !vechile.color ||
-      !vechile.vechileType
+      !vehicle.plate ||
+      !vehicle.capacity ||
+      !vehicle.color ||
+      !vehicle.vehicleType
     ) {
       return res
         .status(400)
@@ -29,7 +29,8 @@ export const registerPilot = async (req, res, next) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const pilot = new pilotModel({
+  
+    const pilot = await pilotModel.create({
       fullname: {
         firstname: fullname.firstname,
         lastname: fullname.lastname,
@@ -37,21 +38,19 @@ export const registerPilot = async (req, res, next) => {
       email,
       password: hashPassword,
       status,
-      vechile: {
-        plate: vechile.plate,
-        capacity: vechile.capacity,
-        color: vechile.color,
-        vechileType: vechile.vechileType,
+      vehicle: {
+        color: vehicle.color,
+        plate: vehicle.plate,
+        capacity: vehicle.capacity,
+        vehicleType: vehicle.vehicleType,
       },
       location: {
-        location: {
-          lat: location?.lat || 0,
-          lon: location?.lon || 0,
-        },
+        lat: location?.lat || 0,
+        lon: location?.lon || 0,
       },
     });
 
-    await pilot.save();
+    // await pilot.save();
 
     const token = await pilot.generateAtoken();
 

@@ -1,6 +1,8 @@
+import { toast } from "react-hot-toast";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { useState } from "react";
+import { UserDataContext } from "../context/UserContext";
 const UserRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -8,19 +10,49 @@ const UserRegister = () => {
   const [lastName, setLastName] = useState("");
   const [userData, setUserData] = useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+
+  const {user, setUser} = React.useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    const user = {  
-      fullname: { firstname : firstName, lastname  : lastName},
+    const user = {
+      fullname: { firstname: firstName, lastname: lastName },
       email,
       password,
     };
-    setUserData(user);
-    console.log(userData);
+    try {
+      const response =  await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return toast.error(errorData.message||"something went wrong");
+      }
+
+      const data = await response.json();
+
+      setUser(data.user);
+  
+      toast.success("User registered successfully");
+    } catch (error) {
+      return toast.error("Something went wrong");
+    }
+
+    
+   
+
     setEmail("");
     setPassword("");
     setFirstName("");
     setLastName("");
+
+    navigate("/loginuser");
   };
 
   return (

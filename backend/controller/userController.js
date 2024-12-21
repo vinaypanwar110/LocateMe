@@ -11,7 +11,8 @@ export const registerUser = async (req, res, next) => {
         .json({ success: false, message: "All fields are required" });
     }
 
-    if (userModel.findOne({ email })) {
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
       return res
         .status(400)
         .json({ success: false, message: "User already exists" });
@@ -62,7 +63,7 @@ export const loginUser = async (req, res, next) => {
     const token = await user.generateAuthToken();
 
     res.cookie("token", token);
-
+    console.log(user);
     return res.status(200).json({ success: true, token, user });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });

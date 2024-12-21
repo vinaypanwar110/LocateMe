@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import { PilotDataContext } from "../context/PilotContext";
+import toast from "react-hot-toast";
 const PilotRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,10 +14,60 @@ const PilotRegister = () => {
   const [vehicleCapacity, setVehicleCapacity] = useState("");
   const [vehicleType, setVehicleType] = useState("");
 
-  const [pilotData, setPilotData] = useState({});
+  const navigate = useNavigate();
 
-  const submitHandler = (e) => {
+  const { pilot, setPilot } = React.useContext(PilotDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/pilot/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullname: {
+              firstname: firstName,
+              lastname: lastName,
+            },
+            email,
+            password,
+            vehicle: {
+              color: vehicleColor,
+              plate: vehiclePlate,
+              capacity: vehicleCapacity,
+              vehicleType: vehicleType,
+            },
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        return toast.error(data.message || "Something went wrong");
+      }
+      setPilot(data.pilot);
+      toast.success("Registration successful");
+    } 
+    catch (error) {
+      return toast.error("Something went wrong");
+    }
+
+    setEmail("");
+    setPassword("");
+    setFirstName("");
+    setLastName("");
+
+    setVehicleColor("");
+    setVehiclePlate("");
+    setVehicleCapacity("");
+    setVehicleType("");
+    
+    navigate("/pilotlogin");
   };
 
   return (
