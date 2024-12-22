@@ -1,6 +1,28 @@
-import React from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import FinishRide from "../PilotComponents/FinishRide";
 const PilotRiding = () => {
+  const [finishRidePanel, setFinishRidePanel] = useState(false);
+  const finishRidePanelRef = useRef(null);
+
+  useGSAP(
+    function () {
+      if (finishRidePanel) {
+        gsap.to(finishRidePanelRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(finishRidePanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [finishRidePanel]
+  );
+
   return (
     <div className="h-screen relative flex flex-col justify-end">
       <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
@@ -20,7 +42,7 @@ const PilotRiding = () => {
       <div
         className="h-1/5 p-6 flex items-center justify-between relative bg-yellow-400 pt-10"
         onClick={() => {
-          // setFinishRidePanel(true);
+          setFinishRidePanel(true);
         }}
       >
         <h5
@@ -35,14 +57,15 @@ const PilotRiding = () => {
         </button>
       </div>
       <div
-        // ref={finishRidePanelRef}
+        ref={finishRidePanelRef}
         className="fixed w-full z-[500] bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
         {/* <FinishRide ride={rideData} setFinishRidePanel={setFinishRidePanel} /> */}
+        <FinishRide setFinishRidePanel={setFinishRidePanel} />
       </div>
 
       <div className="h-screen fixed w-screen top-0 z-[-1]">
-      <img
+        <img
           className="h-full w-full object-cover"
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
           alt=""
